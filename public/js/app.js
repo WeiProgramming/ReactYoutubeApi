@@ -54821,6 +54821,7 @@ var Example = function (_Component) {
         var _this = _possibleConstructorReturn(this, (Example.__proto__ || Object.getPrototypeOf(Example)).call(this, props));
 
         _this.state = { videos: [] };
+        _this.change = _this.change.bind(_this); //you need to bin
 
         __WEBPACK_IMPORTED_MODULE_1_youtube_api_search___default()({
             key: API_KEY,
@@ -54833,12 +54834,25 @@ var Example = function (_Component) {
     }
 
     _createClass(Example, [{
+        key: 'handleChange',
+        value: function handleChange(term) {
+            var _this2 = this;
+
+            __WEBPACK_IMPORTED_MODULE_1_youtube_api_search___default()({
+                key: API_KEY,
+                term: term
+            }, function (videos) {
+                _this2.setState({ videos: videos });
+                console.log(videos);
+            });
+        }
+    }, {
         key: 'render',
         value: function render() {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
                 null,
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__SearchBar__["a" /* default */], null),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__SearchBar__["a" /* default */], { onInputChange: this.handleChange }),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__VideoList__["a" /* default */], { videos: this.state.videos })
             );
         }
@@ -55834,11 +55848,6 @@ var SearchBar = function (_Component) {
 	}
 
 	_createClass(SearchBar, [{
-		key: "onInputChange",
-		value: function onInputChange(event) {
-			this.setState(term);
-		}
-	}, {
 		key: "render",
 		value: function render() {
 			var _this2 = this;
@@ -55849,12 +55858,14 @@ var SearchBar = function (_Component) {
 				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 					"h3",
 					null,
-					"Search: ",
+					"Search:",
 					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { value: this.state.term, onChange: function onChange(event) {
-							return _this2.setState({ term: event.target.value });
-						} })
-				),
-				this.state.term
+							_this2.setState({
+								term: event.target.value });
+							_this2.props.onInputChange(event.target.value);
+						}
+					})
+				)
 			);
 		}
 	}]);
@@ -55880,7 +55891,7 @@ function VideoList(props) {
 		return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 			'li',
 			{ className: 'list-group-item' },
-			__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__VideoItem__["a" /* default */], { video: video })
+			__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__VideoItem__["a" /* default */], { video: video, key: video.etag })
 		);
 	});
 
@@ -55922,7 +55933,7 @@ function VideoItem(_ref) {
 			{ className: "media-body" },
 			__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 				"div",
-				{ className: "media0heading" },
+				{ className: "media-heading" },
 				video.snippet.title
 			)
 		)

@@ -11,6 +11,7 @@ export default class Example extends Component {
     constructor(props){
         super(props);
         this.state = {videos: []}
+        this.change = this.change.bind(this); //you need to bin
 
         YoutubeSearchAPI({
         key: API_KEY,
@@ -20,13 +21,23 @@ export default class Example extends Component {
             console.log(videos);
         });
     }
+    handleChange(term) {
+        YoutubeSearchAPI({
+        key: API_KEY,
+        term: term
+        }, (videos) => {
+            this.setState({videos});
+            console.log(videos);
+        });
+    }
 
     render() {
         return (
             <div>
-                <SearchBar/>
+                <SearchBar onInputChange={this.handleChange}/>
                 <VideoList videos={this.state.videos}/>
             </div>
         );
-    };
+    }
+
 };

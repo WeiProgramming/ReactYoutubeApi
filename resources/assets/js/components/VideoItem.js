@@ -7,7 +7,7 @@ function VideoItem({video}) {
 				<img src = {video.snippet.thumbnails.default.url}/>
 			</div>
 			<div className = "media-body"> 
-				<div className = "media0heading"> 
+				<div className = "media-heading"> 
 					{video.snippet.title}
 				</div>
 			</div>
