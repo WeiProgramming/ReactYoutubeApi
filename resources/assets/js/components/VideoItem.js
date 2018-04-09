@@ -1,10 +1,12 @@
 import React from 'react';
 
-function VideoItem({video}) {
+function VideoItem({video,handleSelected}) {
+	const url = video.snippet.thumbnails.default.url;
+
 	return (
 		<div className = "media">
 			<div className = "media-left">
-				<img src = {video.snippet.thumbnails.default.url}/>
+				<img onClick={() => handleSelected(video)} src = {url}/>
 			</div>
 			<div className = "media-body"> 
 				<div className = "media-heading"> 
